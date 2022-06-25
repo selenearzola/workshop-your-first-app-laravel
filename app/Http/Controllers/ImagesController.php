@@ -21,14 +21,23 @@ class ImagesController extends Controller
 			return $query->where('user_id', $User->id);
 		})->get()->whenNotEmpty(function ($collection) use ($User) {
 
-			return $collection->map(function ($Image)  use ($User) {
+			return collect([
+				'is_logged' => $User ? true : false,
+				'items' => $collection
+			]);
+
+
+			$collection->map(function ($Image)  use ($User) {
 
 				$Image->is_logged = $User ?: false;
 				return $Image;
 			});
 		})->whenEmpty(function ($collection) use ($User) {
 
-			return $collection->put('is_logged', $User ? true : false);
+			return collect([
+				'is_logged' => $User ? true : false,
+				'items' => [],
+			]);
 		});
 	}
 
@@ -52,10 +61,10 @@ class ImagesController extends Controller
 		$uploadedFile = $request->file('image');
 
 		return Images::create([
-			'name' => $uploadedFile->hashName(),
-			'user_id' => auth()->user()->id,
 			'original_name' => pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME),
+			'name' => $uploadedFile->hashName(),
 			'size' => $uploadedFile->getSize(),
+			'user_id' => auth()->user()->id,
 		]);
 	}
 }

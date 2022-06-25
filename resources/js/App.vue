@@ -12,13 +12,13 @@
 
 		</div>
 
-		<main class="flex items-center justify-center w-full pt-36">
+		<main class="flex items-center justify-center w-full pt-36"
+			:class="(filteredItems.length <= 0) ? 'h-screen' : 'h-full' ">
 
-			<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 z-0 mb-32" v-if="images.length > 0">
+			<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 z-0 mb-32" v-if="filteredItems.length > 0">
 
 				<div class="overflow-hidden relative justify-end  cursor-pointer capitalize flex flex-col rounded-md bg-gray-300 w-full lg:w-72 h-full lg:h-96 z-50 object-cover text-white transform hover:scale-105 duration-300 ease-in-out"
 					v-for="(image, index) in filteredItems" :key="index">
-
 
 					<img :src="`/storage/images/${image.name}`" alt="{{image.name}}" class="h-full object-contain" />
 
@@ -59,7 +59,7 @@
 					accepted-file-types="image/jpg, image/jpeg, image/png" allowFileRename="true"
 					allowImagePreview="true" imagePreviewMinHeight="120" imagePreviewMaxHeight="120"
 					imagePreviewTransparencyIndicator="grid" :fileRenameFunction="renameFile"
-					@processfile="handleProcessedFile" @initfile="handleFilePondInitFile" />
+					@processfile="handleProcessedFile" />
 			</div>
 
 		</main>
@@ -125,12 +125,12 @@
 
 			filteredItems() {
 
-
 				return this.images.filter((item) => {
 
 					return item.original_name.toLowerCase().includes(this.search.toLowerCase())
 
 				})
+
 			}
 
 		},
@@ -172,8 +172,8 @@
 				axios.get('collection/gallery')
 					.then((response) => {
 
-						this.canUpload = ((response.data[0] !== undefined && response.data[0].is_logged) || (response.data.is_logged != undefined && response.data.is_logged)) ?? false;
-						this.images = response.data
+						this.canUpload = (response.data !== undefined && response.data.is_logged) ?? false;
+						this.images = response.data.items
 
 					}).catch((error) => {
 
