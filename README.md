@@ -7,5 +7,4 @@ A simple app for managing your collectibles or inventory. This exercise uses:
 * Laravel framework
 * Login, register, and password recovery
 
-
-![Screen Shot 2022-06-24 at 13 29 08](https://user-images.githubusercontent.com/1756145/175644055-cb3183c5-bc1d-4340-954c-0d56ec45e5a0.png)
+![Screen Shot 2022-06-25 at 18 34 24](https://user-images.githubusercontent.com/1756145/175793560-d30387fa-3a7e-4c7e-ba6c-eb5fb4c9ec1f.png)
